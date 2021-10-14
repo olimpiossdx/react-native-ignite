@@ -3,7 +3,11 @@ import { View, Text, StyleSheet, TextInput, Platform, TouchableOpacity } from 'r
 
 export function Home() {
   const [newSkill, setNewSkill] = useState();
-  const [mySkills, setMySkills] = useState();
+  const [mySkills, setMySkills] = useState([]);
+
+  function handleAddNewSill() {
+    setMySkills(oldState => [...oldState, newSkill]);
+  }
 
   return (
     <View style={styles.container}>
@@ -15,16 +19,19 @@ export function Home() {
         style={styles.input}
         onChangeText={setNewSkill}
       />
-      <TouchableOpacity style={styles.button} activeOpacity={0.7}>
+      <TouchableOpacity style={styles.button} activeOpacity={0.7} onPress={handleAddNewSill}>
         <Text style={styles.buttonText}>Add</Text>
       </TouchableOpacity>
 
-      <Text style={[styles.title, { marginTop: 50 }]}>
+      <Text style={[styles.title, { marginVertical: 50 }]}>
         My skills
       </Text>
-      <Text style={styles.skill}>
-        {newSkill}
-      </Text>
+      <TouchableOpacity style={styles.buttonSkill} activeOpacity={0.7}>
+
+        <Text style={styles.textSkill}>
+          {newSkill}
+        </Text>
+      </TouchableOpacity>
 
     </View>
   );
@@ -41,7 +48,7 @@ const styles = StyleSheet.create({
   title: {
     color: '#fff',
     fontSize: 24,
-    fontWeight: 'bold',,
+    fontWeight: 'bold',
   },
   input: {
     backgroundColor: '#1f1e25',
@@ -62,9 +69,15 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold'
   },
-  skill: {
-    color: '#fff',
+  buttonSkill: {
     backgroundColor: '#1f1e25',
-    padding: 20
+    padding: 15,
+    borderRadius: 20,
+    alignItems: 'center'
+  },
+  textSkill: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: 'bold',
   }
 });

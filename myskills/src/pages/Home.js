@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Platform, TouchableOpacity } from 'react-native';
 
 export function Home() {
+  const [newSkill, setNewSkill] = useState();
+  const [mySkills, setMySkills] = useState();
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome, Jujé</Text>
@@ -10,6 +13,7 @@ export function Home() {
         placeholder="New skill"
         placeholderTextColor="#555"
         style={styles.input}
+        onChangeText={setNewSkill}
       />
       <TouchableOpacity style={styles.button} activeOpacity={0.7}>
         <Text style={styles.buttonText}>Add</Text>
@@ -17,6 +21,9 @@ export function Home() {
 
       <Text style={[styles.title, { marginTop: 50 }]}>
         My skills
+      </Text>
+      <Text style={styles.skill}>
+        {newSkill}
       </Text>
 
     </View>
@@ -29,7 +36,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 20,
     paddingVertical: 70,
-    backgroundColor: '#121015',
+    backgroundColor: '#121015'
   },
   title: {
     color: '#fff',
@@ -54,5 +61,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 17,
     fontWeight: 'bold'
+  },
+  skill: {
+    color: '#fff',
+    backgroundColor: '#1f1e25',
+    padding: 20
   }
 });

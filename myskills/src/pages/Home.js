@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Platform, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 
 export function Home() {
   const [newSkill, setNewSkill] = useState();
@@ -19,20 +26,17 @@ export function Home() {
         style={styles.input}
         onChangeText={setNewSkill}
       />
-      <TouchableOpacity style={styles.button} activeOpacity={0.7} onPress={handleAddNewSill}>
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.7}
+        onPress={handleAddNewSill}>
         <Text style={styles.buttonText}>Add</Text>
       </TouchableOpacity>
 
-      <Text style={[styles.title, { marginVertical: 50 }]}>
-        My skills
-      </Text>
+      <Text style={[styles.title, { marginVertical: 50 }]}>My skills</Text>
       <TouchableOpacity style={styles.buttonSkill} activeOpacity={0.7}>
-
-        <Text style={styles.textSkill}>
-          {newSkill}
-        </Text>
+        <Text style={styles.textSkill}>{newSkill}</Text>
       </TouchableOpacity>
-
     </View>
   );
 }
@@ -43,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 20,
     paddingVertical: 70,
-    backgroundColor: '#121015'
+    backgroundColor: '#121015',
   },
   title: {
     color: '#fff',
@@ -62,22 +66,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#a370f7',
     padding: 15,
     borderRadius: 7,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
     fontSize: 17,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   buttonSkill: {
     backgroundColor: '#1f1e25',
     padding: 15,
     borderRadius: 20,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   textSkill: {
     color: '#fff',
     fontSize: 22,
     fontWeight: 'bold',
-  }
+  },
 });

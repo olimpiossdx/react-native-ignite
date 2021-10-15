@@ -33,7 +33,7 @@ export function Home() {
 
       <Text style={[styles.title, { marginVertical: 50 }]}>My skills</Text>
       <FlatList
-        data={FlatList}
+        data={mySkills}
         keyExtractor={item => item}
         renderItem={({ item }) =>
           <SkillCard skill={item} key={item} />

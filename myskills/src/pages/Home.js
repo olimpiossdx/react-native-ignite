@@ -34,10 +34,12 @@ export function Home() {
       </TouchableOpacity>
 
       <Text style={[styles.title, { marginVertical: 50 }]}>My skills</Text>
-      <TouchableOpacity style={styles.buttonSkill} activeOpacity={0.7}>
-        <Text style={styles.textSkill}>{newSkill}</Text>
-      </TouchableOpacity>
-    </View>
+      {mySkills.map(skill =>
+        <TouchableOpacity style={styles.buttonSkill} activeOpacity={0.7} key={skill}>
+          <Text style={styles.textSkill}>{skill}</Text>
+        </TouchableOpacity>)
+      }
+    </View >
   );
 }
 
@@ -78,6 +80,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 20,
     alignItems: 'center',
+    marginVertical: 10
   },
   textSkill: {
     color: '#fff',

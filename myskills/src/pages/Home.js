@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TextInput,
   Platform,
-  FlatList
+  FlatList,,
 } from 'react-native';
 
 import { Button } from '../components/Button';
@@ -13,15 +13,27 @@ import { Button } from '../components/Button';
 export function Home() {
   const [newSkill, setNewSkill] = useState();
   const [mySkills, setMySkills] = useState([]);
+  const [greeting, setGreeting] = useState('');
 
   function handleAddNewSill() {
     setMySkills(oldState => [...oldState, newSkill]);
   }
 
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      setGreeting('Good morning');
+    } else if (currentHour >= 12 && currentHour <= 18) {
+      setGreeting('Good afternoon');
+    } else {
+      setGreeting('Boa night');
+    }
+  }, []);;
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome, Jujé</Text>
-      <Text>Ignite</Text>
+      <Text style={styles.greetings}>{greeting}</Text>
       <TextInput
         placeholder="New skill"
         placeholderTextColor="#555"
@@ -35,9 +47,7 @@ export function Home() {
       <FlatList
         data={mySkills}
         keyExtractor={item => item}
-        renderItem={({ item }) =>
-          <SkillCard skill={item} key={item} />
-        }
+        renderItem={({ item }) => <SkillCard skill={item} key={item} />}
       />
     </View>
   );
@@ -64,16 +74,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     borderRadius: 7,
   },
-  buttonSkill: {
-    backgroundColor: '#1f1e25',
-    padding: 15,
-    borderRadius: 20,
-    alignItems: 'center',
-    marginVertical: 10,,
-  },
-  textSkill: {
-    color: '#fff',
-    fontSize: 22,
-    fontWeight: 'bold',
-  },
+  greetings: {
+    color: '#fff',,
+  },,
 });

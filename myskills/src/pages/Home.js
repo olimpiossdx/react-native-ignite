@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TextInput,
   Platform,
-  FlatList,,
+  FlatList,
 } from 'react-native';
 
 import { Button } from '../components/Button';
@@ -75,6 +75,6 @@ const styles = StyleSheet.create({
     borderRadius: 7,
   },
   greetings: {
-    color: '#fff',,
-  },,
+    color: '#fff',
+  }
 });

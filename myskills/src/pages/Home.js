@@ -18,7 +18,9 @@ export function Home() {
   const [greeting, setGreeting] = useState('');
 
   function handleAddNewSill() {
-    setMySkills(oldState => [...oldState, newSkill]);
+    const updateSkill = [...mySkills, newSkill];
+    setMySkills(updateSkill);
+    setNewSkill('');
   }
 
   useEffect(() => {
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 70,
+    paddingVertical: 50,
     backgroundColor: '#121015',
   },
   title: {
@@ -75,6 +77,7 @@ const styles = StyleSheet.create({
     padding: Platform.OS === 'ios' ? 15 : 10,
     marginTop: 30,
     borderRadius: 7,
+    marginVertical: 20,
   },
   greetings: {
     color: '#fff',

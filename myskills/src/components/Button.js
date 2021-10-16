@@ -1,7 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 
-export function Button({ handleAddNewSill }) {
+export function Button({handleAddNewSill}) {
   return (
     <TouchableOpacity
       style={styles.button}

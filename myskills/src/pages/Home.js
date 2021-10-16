@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,7 +9,8 @@ import {
   FlatList,
 } from 'react-native';
 
-import { Button } from '../components/Button';
+import {Button} from '../components/Button';
+import {SkillCard} from '../components/SkillCard';
 
 export function Home() {
   const [newSkill, setNewSkill] = useState();
@@ -28,7 +30,7 @@ export function Home() {
     } else {
       setGreeting('Boa night');
     }
-  }, []);;
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -43,11 +45,11 @@ export function Home() {
 
       <Button handleAddNewSill={handleAddNewSill} />
 
-      <Text style={[styles.title, { marginVertical: 50 }]}>My skills</Text>
+      <Text style={[styles.title, {marginVertical: 50}]}>My skills</Text>
       <FlatList
         data={mySkills}
         keyExtractor={item => item}
-        renderItem={({ item }) => <SkillCard skill={item} key={item} />}
+        renderItem={({item}) => <SkillCard skill={item} key={item} />}
       />
     </View>
   );
@@ -76,5 +78,5 @@ const styles = StyleSheet.create({
   },
   greetings: {
     color: '#fff',
-  }
+  },
 });

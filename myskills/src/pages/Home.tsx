@@ -31,6 +31,10 @@ export function Home() {
     setMySkills(oldState => [...oldState, data]);
   }
 
+  function handleRemove(id: string) {
+    setMySkills(oldState => oldState.filter(skill => skill.id !== id));
+  }
+
   useEffect(() => {
     const currentHour = new Date().getHours();
     if (currentHour < 12) {
@@ -53,13 +57,15 @@ export function Home() {
         onChangeText={setNewSkill}
       />
 
-      <Button handleAddNewSill={handleAddNewSill} />
+      <Button onPress={handleAddNewSill} title="Add" />
 
       <Text style={[styles.title, {marginVertical: 50}]}>My skills</Text>
       <FlatList
         data={mySkills}
         keyExtractor={item => item.id}
-        renderItem={({item}) => <SkillCard skill={item.name} />}
+        renderItem={({item}) => (
+          <SkillCard skill={item.name} onPress={() => handleRemove(item.id)} />
+        )}
       />
     </View>
   );

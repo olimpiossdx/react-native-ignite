@@ -18,6 +18,7 @@ export default {
     },
     shape: "#fff",
     title: "#363f5f",
+    border: "rgba(150, 156, 179,0.7)",
     text: {
       main: "#962cb2",
       dark: "#000000",

@@ -14,7 +14,7 @@ interface ContainerProps {
 
 export const Container = styled(TouchableOpacity)<ContainerProps>`
   width: 48%;
-  background-color: ${({ theme }) => theme.colors.secondary.main};
+  background-color: ${({ theme }) => theme.colors.background};
 
   flex-direction: row;
   align-items: center;
@@ -22,7 +22,7 @@ export const Container = styled(TouchableOpacity)<ContainerProps>`
 
   border-width: ${({ isActive }) => (isActive ? 0 : 1.5)}px;
   border-style: solid;
-  border-color: ${({ theme }) => theme.colors.text.main};
+  border-color: ${({ theme }) => theme.colors.border};
   border-radius: 5px;
 
   padding: 16px;
@@ -52,5 +52,5 @@ export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: ${RFValue(14)}px;
 
-  color: ${({ theme }) => theme.colors.shape};
+  color: ${({ theme }) => theme.colors.title};
 `;

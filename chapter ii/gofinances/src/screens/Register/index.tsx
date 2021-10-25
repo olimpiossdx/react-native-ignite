@@ -1,10 +1,20 @@
 import React from 'react';
-import { Text } from 'react-native';
+
+import { Input } from '../../components/Form/Input';
+
+import { Container, Form, Header, Title } from './styles';
 
 export function Register() {
   return (
     <Container>
-      <Text>Register</Text>
+      <Header>
+        <Title>Register</Title>
+      </Header>
+      <Form>
+        <Input placeholder='Nome' />
+
+        <Input placeholder='Preço' />
+      </Form>
     </Container>
   )
 };

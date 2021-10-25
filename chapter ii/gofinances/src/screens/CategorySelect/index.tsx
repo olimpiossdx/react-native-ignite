@@ -5,7 +5,7 @@ import { categories } from '../../utils/categories';
 
 import { Container, Header, Title, Category, Icon, Name, Separator, Footer } from './styles';
 
-interface Category {
+export interface Category {
   key: string;
   name: string;
 };
@@ -16,7 +16,11 @@ interface Props {
   closeSelectCategory: () => void;
 };
 
-export function CategorySelect({ category, setCategory }: Props) {
+export function CategorySelect({ category, setCategory, closeSelectCategory }: Props) {
+
+  function hanldeCategorySelect(item: Category) {
+    setCategory({ key: item.key, name: item.name })
+  }
 
   return (
     <Container>
@@ -29,7 +33,7 @@ export function CategorySelect({ category, setCategory }: Props) {
         keyExtractor={(item) => item.key}
         renderItem={({ item }) => {
           return (
-            <Category>
+            <Category onPress={() => hanldeCategorySelect(item)}>
               <Icon name={item.icon} />
               <Name >{item.name}</Name>
             </Category>
@@ -38,7 +42,7 @@ export function CategorySelect({ category, setCategory }: Props) {
         ItemSeparatorComponent={() => <Separator />}
       />
       <Footer>
-        <Button title='Selecionar' />
+        <Button title='Selecionar' onPress={closeSelectCategory} />
       </Footer>
     </Container >
   )

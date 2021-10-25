@@ -8,6 +8,10 @@ export default {
       main: "#ff872c",
       light: "rgba(18,164,84,0.5)",
     },
+    success: {
+      main: '#12A454',
+      light: 'rgba(18, 164, 84, 0.5)'
+    },
     attention: {
       main: "#e83f3b",
       light: "rgba(232,63,91,0.5)",

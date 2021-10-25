@@ -6,11 +6,11 @@ export default {
     },
     secondary: {
       main: "#ff872c",
-      light: "rgba(18,164,84,0.5)",
+      light: "rgba(	255, 135, 44,0.5)",
     },
     success: {
-      main: '#12A454',
-      light: 'rgba(18, 164, 84, 0.5)'
+      main: "#12A454",
+      light: "rgba(18, 164, 84, 0.5)",
     },
     attention: {
       main: "#e83f3b",
@@ -20,7 +20,7 @@ export default {
     title: "#363f5f",
     text: {
       main: "#962cb2",
-      dark: "#000000"
+      dark: "#000000",
     },
     background: "#f0f2f5",
   },

@@ -18,7 +18,10 @@ export default {
     },
     shape: "#fff",
     title: "#363f5f",
-    text: "#962cb2",
+    text: {
+      main: "#962cb2",
+      dark: "#000000"
+    },
     background: "#f0f2f5",
   },
   fonts: {

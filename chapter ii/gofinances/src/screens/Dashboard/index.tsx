@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from '@react-navigation/native';
 
 import { HighlightCard } from "../../components/HighlightCard";
 import { ITransactionCardProps } from "../../components/TransactionCard";
@@ -21,6 +22,7 @@ import {
   Title,
   TransactionsList,
 } from "./styles";
+import { useCallback } from "hoist-non-react-statics/node_modules/@types/react";
 
 export interface IDataListProps extends ITransactionCardProps {
   id: string;
@@ -62,6 +64,8 @@ export function Dashboard() {
       loadTransactionsAsync()
     }
   }, []);
+
+  useFocusEffect(useCallback(() => { loadTransactionsAsync() }, []))
 
 
   // const data: IDataListProps[] = [

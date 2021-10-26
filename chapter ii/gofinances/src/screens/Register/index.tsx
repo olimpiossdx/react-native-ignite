@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Alert, Keyboard, Modal, TouchableWithoutFeedback } from "react-native";
-import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import uuid from 'react-native-uuid';
+
+import { useForm } from "react-hook-form";
+import { useNavigation } from '@react-navigation/native';
 
 import { Button } from "../../components/Form/Button";
 import InputForm from "../../components/Form/InputForm";
@@ -42,9 +45,12 @@ export function Register() {
   const [transactionType, setTransactionType] = useState("");
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
+  const navigation = useNavigation();
+
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
@@ -61,11 +67,13 @@ export function Register() {
   }
 
   async function handldeRegisterAsync({ name, amount }: FormData) {
-    const data = {
+    const newTransaction = {
+      id: String(uuid.v4()),
       name,
       amount,
       transactionType,
       category: category.key,
+      data: new Date()
     };
 
     if (!transactionType)
@@ -75,7 +83,25 @@ export function Register() {
       return Alert.alert("Selecione a categoria");
 
     try {
-      await AsyncStorage.setItem(collectionKey, JSON.stringify(data));
+      const data = await AsyncStorage.getItem(collectionKey);
+      const currentData = data ? JSON.parse(data) : [];
+
+      const dataFormatted = [
+        ...currentData,
+        newTransaction
+      ]
+
+      await AsyncStorage.setItem(collectionKey, JSON.stringify(dataFormatted));
+
+      reset();
+      setTransactionType('');
+      setCategory({
+        key: "category",
+        name: "Categoria",
+      });
+
+      navigation.navigate('Listagem');
+
     }
     catch (error) {
       console.error(`screen:Register\n metódo:HandleRegister\n error`, error);
@@ -83,18 +109,6 @@ export function Register() {
     }
   }
 
-  useEffect(() => {
-    async function loadData() {
-      const data = await AsyncStorage.getItem(collectionKey);
-      console.log(JSON.parse(data!));
-    }
-
-    loadData();
-
-    return () => {
-      loadData();
-    }
-  }, [])
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Container>

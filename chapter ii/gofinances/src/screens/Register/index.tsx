@@ -65,7 +65,8 @@ export function Register() {
       category: category.key,
     };
 
-    if (!transactionType) return Alert.alert("Selecione o tipo da transação");
+    if (!transactionType)
+      return Alert.alert("Selecione o tipo da transação");
 
     if (category.key === "category")
       return Alert.alert("Selecione a categoria");

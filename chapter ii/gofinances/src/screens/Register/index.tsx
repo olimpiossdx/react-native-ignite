@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Keyboard, Modal, TouchableWithoutFeedback } from "react-native";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Button } from "../../components/Form/Button";
 import InputForm from "../../components/Form/InputForm";
@@ -32,6 +33,8 @@ interface FormData {
 }
 
 export function Register() {
+  const collectionKey = '@gofinances:transactions';
+
   const [category, setCategory] = useState({
     key: "category",
     name: "Categoria",
@@ -57,7 +60,7 @@ export function Register() {
     setCategoryModalOpen(true);
   }
 
-  function handldeRegister({ name, amount }: FormData) {
+  async function handldeRegisterAsync({ name, amount }: FormData) {
     const data = {
       name,
       amount,
@@ -71,8 +74,27 @@ export function Register() {
     if (category.key === "category")
       return Alert.alert("Selecione a categoria");
 
-    console.log(data);
+    try {
+      await AsyncStorage.setItem(collectionKey, JSON.stringify(data));
+    }
+    catch (error) {
+      console.error(`screen:Register\n metódo:HandleRegister\n error`, error);
+      Alert.alert('Não foi possível salvar');
+    }
   }
+
+  useEffect(() => {
+    async function loadData() {
+      const data = await AsyncStorage.getItem(collectionKey);
+      console.log(JSON.parse(data!));
+    }
+
+    loadData();
+
+    return () => {
+      loadData();
+    }
+  }, [])
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Container>
@@ -117,7 +139,7 @@ export function Register() {
             />
           </Fields>
 
-          <Button title="Enviar" onPress={handleSubmit(handldeRegister)} />
+          <Button title="Enviar" onPress={handleSubmit(handldeRegisterAsync)} />
         </Form>
         <Modal visible={categoryModalOpen}>
           <CategorySelect

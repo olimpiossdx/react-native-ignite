@@ -1,7 +1,10 @@
 import styled from "styled-components/native";
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
-import { Feather } from '@expo/vector-icons/';
-import { getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper';
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { Feather } from "@expo/vector-icons/";
+import {
+  getStatusBarHeight,
+  getBottomSpace,
+} from "react-native-iphone-x-helper";
 import { FlatList } from "react-native";
 import { IDataListProps } from ".";
 
@@ -15,14 +18,14 @@ export const Container = styled.View`
 export const Header = styled.View`
   width: 100%;
   height: ${RFPercentage(42)}px;
-  
+
   background-color: ${({ theme }) => theme.colors.primary.main};
 `;
 
 export const UserWrapper = styled.View`
   width: 100%;
-  
-  padding:  0 24px;
+
+  padding: 0 24px;
   margin-top: ${getStatusBarHeight() + RFValue(28)}px;
 
   flex-direction: row;
@@ -57,22 +60,22 @@ export const UserName = styled.Text`
 
   font-size: ${RFValue(18)}px;
   font-family: ${({ theme }) => theme.fonts.bold}px;
-  `;
+`;
 
 export const Icon = styled(Feather)`
-    color: ${({ theme }) => theme.colors.secondary.main};
-    font-size: ${RFValue(24)}px;
+  color: ${({ theme }) => theme.colors.secondary.main};
+  font-size: ${RFValue(24)}px;
 `;
 
 export const HighlightCards = styled.ScrollView.attrs({
   horizontal: true,
   showsHorizontalScrillIndicator: false,
-  contentContainerStyle: { paddingHorizontal: 24 }
+  contentContainerStyle: { paddingHorizontal: 24 },
 })`
   width: 100%;
-  
+
   position: absolute;
-  margin-top: ${RFPercentage(20)}px;
+  margin-top: ${RFPercentage(10)}px;
 `;
 
 export const Transactions = styled.View`
@@ -83,15 +86,17 @@ export const Transactions = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-size:  ${RFValue(18)}px;
+  font-size: ${RFValue(18)}px;
   font-family: ${({ theme }) => theme.fonts.regular};
 
   margin-bottom: 16px;
 `;
 
-export const TransactionsList = styled(FlatList as new () => FlatList<IDataListProps>).attrs({
+export const TransactionsList = styled(
+  FlatList as new () => FlatList<IDataListProps>
+).attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {
-    paddingBottom: getBottomSpace()
-  }
+    paddingBottom: getBottomSpace(),
+  },
 })``;

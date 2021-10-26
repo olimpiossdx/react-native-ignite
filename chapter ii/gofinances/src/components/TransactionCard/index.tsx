@@ -8,7 +8,7 @@ interface ICategoryProps {
 
 export interface ITransactionCardProps {
   type: 'positive' | 'negative';
-  title: string;
+  name: string;
   amount: string;
   category: ICategoryProps;
   date: string;
@@ -22,7 +22,7 @@ export function TransactionCard({ data }: IProps) {
   return (
     <Container>
       <Title>
-        {data.title}
+        {data.name}
       </Title>
       <Amount type={data.type}>
         {data.type === 'negative' && '- '}

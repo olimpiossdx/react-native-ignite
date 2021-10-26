@@ -36,8 +36,6 @@ interface FormData {
 }
 
 export function Register() {
-  const collectionKey = '@gofinances:transactions';
-
   const [category, setCategory] = useState({
     key: "category",
     name: "Categoria",
@@ -83,6 +81,8 @@ export function Register() {
       return Alert.alert("Selecione a categoria");
 
     try {
+      const collectionKey = '@gofinances:transactions';
+
       const data = await AsyncStorage.getItem(collectionKey);
       const currentData = data ? JSON.parse(data) : [];
 

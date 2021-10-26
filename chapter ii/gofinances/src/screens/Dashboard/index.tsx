@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { HighlightCard } from "../../components/HighlightCard";
 import { ITransactionCardProps } from "../../components/TransactionCard";
 import { TransactionCard } from "../../components/TransactionCard";
@@ -25,32 +27,69 @@ export interface IDataListProps extends ITransactionCardProps {
 }
 
 export function Dashboard() {
-  const data: IDataListProps[] = [
-    {
-      id: "1",
-      type: "positive",
-      title: "Desenvolvimento de site ",
-      amount: "R$ 12.000,00 ",
-      category: { name: "Vendas", icon: "dollar-sign" },
-      date: "13/04/2020",
-    },
-    {
-      id: "2",
-      type: "negative",
-      title: "Hambuergueria Pizzy",
-      amount: "R$ 59,00 ",
-      category: { name: "alimentacao", icon: "coffee" },
-      date: "13/04/2020",
-    },
-    {
-      id: "3",
-      type: "negative",
-      title: "alugel apartamento ",
-      amount: "R$ 1.200,00 ",
-      category: { name: "casa", icon: "shopping-bag" },
-      date: "13/04/2020",
-    },
-  ];
+  const [data, setData] = useState<IDataListProps[]>([]);
+
+  async function loadTransactionsAsync() {
+    const dataKey = '@gofinances:transactions';
+    const response = await AsyncStorage.getItemda(dataKey);
+    const transactions = response ? JSON.parse(response) : [];
+
+    const transactionsFormatted: IDataListProps[] = transactions.map((transaction: IDataListProps) => {
+      const amount = Number(transaction.amount).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      });
+
+      const dateFormatted = Intl.DateTimeFormat('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit'
+      }).format(new Date(transaction.date));
+
+      return {
+        ...transaction,
+        amount,
+        date: dateFormatted
+      };
+    });
+
+    setData(transactionsFormatted);
+  };
+
+  useEffect(() => {
+    loadTransactionsAsync()
+    return () => {
+      loadTransactionsAsync()
+    }
+  }, []);
+
+
+  // const data: IDataListProps[] = [
+  //   {
+  //     id: "1",
+  //     type: "positive",
+  //     title: "Desenvolvimento de site ",
+  //     amount: "R$ 12.000,00 ",
+  //     category: { name: "Vendas", icon: "dollar-sign" },
+  //     date: "13/04/2020",
+  //   },
+  //   {
+  //     id: "2",
+  //     type: "negative",
+  //     title: "Hambuergueria Pizzy",
+  //     amount: "R$ 59,00 ",
+  //     category: { name: "alimentacao", icon: "coffee" },
+  //     date: "13/04/2020",
+  //   },
+  //   {
+  //     id: "3",
+  //     type: "negative",
+  //     title: "alugel apartamento ",
+  //     amount: "R$ 1.200,00 ",
+  //     category: { name: "casa", icon: "shopping-bag" },
+  //     date: "13/04/2020",
+  //   },
+  // ];
 
   return (
     <Container>

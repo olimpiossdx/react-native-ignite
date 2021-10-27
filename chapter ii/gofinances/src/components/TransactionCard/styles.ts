@@ -26,10 +26,7 @@ export const Amount = styled.Text<ITransactionProps>`
   font-size: ${RFValue(20)}px;
   margin-top: 2px;
 
-  color: ${({ theme, type }) =>
-    type === "positive"
-      ? theme.colors.success.main
-      : theme.colors.attention.main};
+  color: ${({ theme, type }) => type === "positive" ? theme.colors.success.main : theme.colors.attention.main};
 `;
 
 export const Footer = styled.View`

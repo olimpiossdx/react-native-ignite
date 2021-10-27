@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Container, Category, Icon } from './styles';
 
 interface Props {
@@ -7,10 +7,8 @@ interface Props {
 };
 
 export function CategorySelectButton({ title, onPress }: Props) {
-  return (
-    <Container onPress={onPress}>
-      <Category> {title} </Category>
-      <Icon name='chevron-down' />
-    </Container>
-  )
-}
+  return (<Container onPress={onPress}>
+    <Category> {title} </Category>
+    <Icon name='chevron-down' />
+  </Container>);
+};

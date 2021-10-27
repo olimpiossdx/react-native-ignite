@@ -34,17 +34,16 @@ const schema = Yup.object().shape({
 interface FormData {
   name: string;
   amount: string;
-}
+};
 
 export function Register() {
+  const navigation = useNavigation();
+  const [transactionType, setTransactionType] = useState("");
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [category, setCategory] = useState({
     key: "category",
     name: "Categoria",
   });
-  const [transactionType, setTransactionType] = useState("");
-  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-
-  const navigation = useNavigation();
 
   const {
     control,
@@ -110,60 +109,58 @@ export function Register() {
     }
   }
 
-  return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Container>
-        <Header>
-          <Title>Cadastro</Title>
-        </Header>
-        <Form>
-          <Fields>
-            <InputForm
-              name="name"
-              control={control}
-              placeholder="Nome"
-              autoCapitalize="sentences"
-              autoCorrect={false}
-              error={errors.name && errors.name.message}
-            />
-            <InputForm
-              name="amount"
-              control={control}
-              placeholder="Preço"
-              keyboardType="numeric"
-              error={errors.amount && errors.amount.message}
-            />
-
-            <TransactionTypes>
-              <TransactionTypeButton
-                type="up"
-                title="Income"
-                onPress={() => handleTransactionTypeSelect("positive")}
-                isActive={transactionType === "positive"}
-              />
-              <TransactionTypeButton
-                type="down"
-                title="Outcome"
-                onPress={() => handleTransactionTypeSelect("negative")}
-                isActive={transactionType === "negative"}
-              />
-            </TransactionTypes>
-            <CategorySelectButton
-              title={category.name}
-              onPress={handleOpenCategoryModal}
-            />
-          </Fields>
-
-          <Button title="Enviar" onPress={handleSubmit(handldeRegisterAsync)} />
-        </Form>
-        <Modal visible={categoryModalOpen}>
-          <CategorySelect
-            category={category}
-            setCategory={setCategory}
-            closeSelectCategory={handleCloseCategoryModal}
+  return (<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <Container>
+      <Header>
+        <Title>Cadastro</Title>
+      </Header>
+      <Form>
+        <Fields>
+          <InputForm
+            name="name"
+            control={control}
+            placeholder="Nome"
+            autoCapitalize="sentences"
+            autoCorrect={false}
+            error={errors.name && errors.name.message}
           />
-        </Modal>
-      </Container>
-    </TouchableWithoutFeedback>
-  );
-}
+          <InputForm
+            name="amount"
+            control={control}
+            placeholder="Preço"
+            keyboardType="numeric"
+            error={errors.amount && errors.amount.message}
+          />
+
+          <TransactionTypes>
+            <TransactionTypeButton
+              type="up"
+              title="Income"
+              onPress={() => handleTransactionTypeSelect("positive")}
+              isActive={transactionType === "positive"}
+            />
+            <TransactionTypeButton
+              type="down"
+              title="Outcome"
+              onPress={() => handleTransactionTypeSelect("negative")}
+              isActive={transactionType === "negative"}
+            />
+          </TransactionTypes>
+          <CategorySelectButton
+            title={category.name}
+            onPress={handleOpenCategoryModal}
+          />
+        </Fields>
+
+        <Button title="Enviar" onPress={handleSubmit(handldeRegisterAsync)} />
+      </Form>
+      <Modal visible={categoryModalOpen}>
+        <CategorySelect
+          category={category}
+          setCategory={setCategory}
+          closeSelectCategory={handleCloseCategoryModal}
+        />
+      </Modal>
+    </Container>
+  </TouchableWithoutFeedback>);
+};

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { ActivityIndicator } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from '@react-navigation/native';
@@ -24,11 +24,10 @@ import {
   TransactionsList,
   LoadingContainer
 } from "./styles";
-import { useCallback } from "hoist-non-react-statics/node_modules/@types/react";
 
 export interface IDataListProps extends ITransactionCardProps {
   id: string;
-}
+};
 
 interface HighlightProps {
   amount: string;
@@ -89,7 +88,6 @@ export function Dashboard() {
       };
     });
 
-
     setTransactions(transactionsFormatted);
 
     const lastTransactionEntriesFormatted = getLastTransactionDate(transactions, 'positive');
@@ -132,35 +130,9 @@ export function Dashboard() {
     }
   }, []);
 
-  useFocusEffect(useCallback(() => { loadTransactionsAsync() }, []))
-
-
-  // const data: IDataListProps[] = [
-  //   {
-  //     id: "1",
-  //     type: "positive",
-  //     title: "Desenvolvimento de site ",
-  //     amount: "R$ 12.000,00 ",
-  //     category: { name: "Vendas", icon: "dollar-sign" },
-  //     date: "13/04/2020",
-  //   },
-  //   {
-  //     id: "2",
-  //     type: "negative",
-  //     title: "Hambuergueria Pizzy",
-  //     amount: "R$ 59,00 ",
-  //     category: { name: "alimentacao", icon: "coffee" },
-  //     date: "13/04/2020",
-  //   },
-  //   {
-  //     id: "3",
-  //     type: "negative",
-  //     title: "alugel apartamento ",
-  //     amount: "R$ 1.200,00 ",
-  //     category: { name: "casa", icon: "shopping-bag" },
-  //     date: "13/04/2020",
-  //   },
-  // ];
+  useFocusEffect(useCallback(() => {
+    loadTransactionsAsync()
+  }, []));
 
   return (
     <Container>

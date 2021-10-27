@@ -5,12 +5,12 @@ import { Feather } from "@expo/vector-icons";
 
 interface IconsProps {
   type: "up" | "down";
-}
+};
 
 interface ContainerProps {
   isActive: boolean;
   type: "up" | "down";
-}
+};
 
 export const Container = styled.View<ContainerProps>`
   width: 48%;
@@ -21,18 +21,8 @@ export const Container = styled.View<ContainerProps>`
   border-color: ${({ theme }) => theme.colors.border};
   border-radius: 5px;
 
-  ${({ isActive, type }) =>
-    isActive &&
-    type === "up" &&
-    css`
-      background-color: ${({ theme }) => theme.colors.success.light};
-    `}
-  ${({ isActive, type }) =>
-    isActive &&
-    type === "down" &&
-    css`
-      background-color: ${({ theme }) => theme.colors.attention.light};
-    `}
+  ${({ isActive, type }) => isActive && type === "up" && css` background-color: ${({ theme }) => theme.colors.success.light}; `}
+  ${({ isActive, type }) => isActive && type === "down" && css` background-color: ${({ theme }) => theme.colors.attention.light}; `}
 `;
 
 export const Button = styled(RectButton)`
@@ -47,8 +37,7 @@ export const Icon = styled(Feather) <IconsProps>`
   font-size: ${RFValue(24)}px;
   margin-right: 12px;
 
-  color: ${({ theme, type }) =>
-    type === "up" ? theme.colors.success.main : theme.colors.attention.main};
+  color: ${({ theme, type }) => type === "up" ? theme.colors.success.main : theme.colors.attention.main};
 `;
 
 export const Title = styled.Text`

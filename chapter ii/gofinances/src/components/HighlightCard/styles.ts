@@ -4,11 +4,10 @@ import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 interface ITypeProps {
   type: "up" | "down" | "total";
-}
+};
 
 export const Container = styled.View<ITypeProps>`
-  background-color: ${({ theme, type }) =>
-    type === "total" ? theme.colors.secondary.main : theme.colors.shape};
+  background-color: ${({ theme, type }) => type === "total" ? theme.colors.secondary.main : theme.colors.shape};
 
   width: ${RFValue(300)}px;
   border-radius: 5px;
@@ -31,25 +30,13 @@ export const Title = styled.Text<ITypeProps>`
     type === "total" ? theme.colors.shape : theme.colors.text.dark};
 `;
 
-export const Icon = styled(Feather)<ITypeProps>`
+export const Icon = styled(Feather) <ITypeProps>`
   font-size: ${RFValue(40)}px;
-  ${({ type }) =>
-    type === "up" &&
-    css`
-      color: ${({ theme }) => theme.colors.success.main};
-    `}
+  ${({ type }) => type === "up" && css` color: ${({ theme }) => theme.colors.success.main};`}
 
-  ${({ type }) =>
-    type === "down" &&
-    css`
-      color: ${({ theme }) => theme.colors.attention.main};
-    `}
+  ${({ type }) => type === "down" && css` color: ${({ theme }) => theme.colors.attention.main}; `}
 
-  ${({ type }) =>
-    type === "total" &&
-    css`
-      color: ${({ theme }) => theme.colors.shape};
-    `}
+  ${({ type }) => type === "total" && css` color: ${({ theme }) => theme.colors.shape}; `}
 `;
 
 export const Footer = styled.View``;
@@ -58,8 +45,7 @@ export const Amount = styled.Text<ITypeProps>`
   font-family: ${({ theme }) => theme.fonts.medium};
   font-size: ${RFValue(32)}px;
 
-  color: ${({ theme, type }) =>
-    type === "total" ? theme.colors.shape : theme.colors.text.dark};
+  color: ${({ theme, type }) => type === "total" ? theme.colors.shape : theme.colors.text.dark};
   margin-top: 38px;
 `;
 
@@ -67,8 +53,7 @@ export const LastTransaction = styled.Text<ITypeProps>`
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: ${RFValue(12)}px;
 
-  color: ${({ theme, type }) =>
-    type === "total" ? theme.colors.shape : theme.colors.text.main};
+  color: ${({ theme, type }) => type === "total" ? theme.colors.shape : theme.colors.text.main};
 `;
 
 export const Transactions = styled.View`

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { VictoryPie } from 'victory-native';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -9,7 +9,9 @@ import { ptBR } from 'date-fns/locale';
 
 import { HistoryCard } from '../../components/HistoryCard'
 import { categories } from '../../utils/categories';
-import { Container, Header, Title, Content, ChartContainer, MonthSelect, MonthSelectButton, MonthSelectIcon, Month } from './styled'
+import { Container, Header, Title, Content, ChartContainer, MonthSelect, MonthSelectButton, MonthSelectIcon, Month, LoadingContainer } from './styled'
+import { ActivityIndicator } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface TransactionData {
   key: string;
@@ -29,14 +31,19 @@ interface CategoryData {
 };
 
 export function Resume() {
-  const [seletecDate, setSeletecDate] = useState(new Date());
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([]);
 
   const theme = useTheme();
 
   function handleDateChange(action: 'next' | 'prev') {
-    const newDate = action == 'next' ? addMonths(seletecDate, 1) : subMonths(seletecDate, 1);
-    setSeletecDate(newDate);
+    setIsLoading(true);
+
+    const newDate = action == 'next' ? addMonths(selectedDate, 1) : subMonths(selectedDate, 1);
+    setSelectedDate(newDate);
+
+    setIsLoading(false);
   };
 
   async function loadDataAsync() {
@@ -47,8 +54,8 @@ export function Resume() {
 
     const expensives = responseFormatted.filter((expensive) =>
       expensive.type === 'negative' &&
-      new Date(expensive.date).getMonth() === seletecDate.getMonth() &&
-      new Date(expensive.date).getFullYear() === seletecDate.getFullYear());
+      new Date(expensive.date).getMonth() === selectedDate.getMonth() &&
+      new Date(expensive.date).getFullYear() === selectedDate.getFullYear());
 
     const expensiveTotal = expensives.reduce((acumulator: number, expensive: TransactionData) => {
       return acumulator + Number(expensive.amount);
@@ -79,6 +86,7 @@ export function Resume() {
     });
 
     setTotalByCategories(totalByCategory);
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -86,52 +94,60 @@ export function Resume() {
     return () => {
       loadDataAsync()
     }
-  }, [seletecDate]);
+  }, [selectedDate]);
+
+  useFocusEffect(useCallback(() => {
+    loadDataAsync()
+  }, []));
 
   return (
     <Container>
       <Header>
         <Title>Resymo por categoria</Title>
       </Header>
+      {isLoading
+        ? <LoadingContainer>
+          <ActivityIndicator color={theme.colors.primary.main} size='large' />
+        </LoadingContainer>
+        : <Content
+          contentContainerStyle={{
+            paddingHorizontal: 24,
+            paddingBottom: useBottomTabBarHeight()
+          }}
+        >
+          <MonthSelect>
+            <MonthSelectButton onPress={() => handleDateChange('prev')}>
+              <MonthSelectIcon name='chevron-left' />
+            </MonthSelectButton>
 
-      <Content
-        contentContainerStyle={{
-          paddingHorizontal: 24,
-          paddingBottom: useBottomTabBarHeight()
-        }}
-      >
-        <MonthSelect>
-          <MonthSelectButton onPress={() => handleDateChange('prev')}>
-            <MonthSelectIcon name='chevron-left' />
-          </MonthSelectButton>
+            <Month>{format(selectedDate, 'MMM, yyy', { locale: ptBR })}</Month>
 
-          <Month>{format(seletecDate, 'MMM, yyy', { locale: ptBR })}</Month>
+            <MonthSelectButton onPress={() => handleDateChange('next')}>
+              <MonthSelectIcon name='chevron-right' />
+            </MonthSelectButton>
+          </MonthSelect>
 
-          <MonthSelectButton onPress={() => handleDateChange('next')}>
-            <MonthSelectIcon name='chevron-right' />
-          </MonthSelectButton>
-        </MonthSelect>
+          <ChartContainer>
+            <VictoryPie
+              data={totalByCategories}
+              colorScale={totalByCategories.map(category => category.color)}
+              style={{
+                labels: {
+                  fontSize: RFValue(18),
+                  fontWeight: 'bold',
+                  fill: theme.colors.shape
+                }
+              }}
+              labelRadius={50}
+              x='percent'
+              y='total'
+            />
+          </ChartContainer>
 
-        <ChartContainer>
-          <VictoryPie
-            data={totalByCategories}
-            colorScale={totalByCategories.map(category => category.color)}
-            style={{
-              labels: {
-                fontSize: RFValue(18),
-                fontWeight: 'bold',
-                fill: theme.colors.shape
-              }
-            }}
-            labelRadius={50}
-            x='percent'
-            y='total'
-          />
-        </ChartContainer>
+          {totalByCategories.map(item => (<HistoryCard key={item.key} title={item.name} amount={item.totalFormatted} color={item.color} />))}
+        </Content>}
 
-        {totalByCategories.map(item => (<HistoryCard key={item.key} title={item.name} amount={item.totalFormatted} color={item.color} />))}
-      </Content>
 
-    </Container>
+    </Container >
   )
 }

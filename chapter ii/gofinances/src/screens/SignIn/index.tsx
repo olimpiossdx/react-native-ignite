@@ -8,8 +8,11 @@ import { Container, Header, TitleWrapper, Title, SignInTitle, Footer, FooterWrap
 import AppleSvg from '../../assets/apple.svg';
 import GoogleSvg from '../../assets/google.svg';
 import LogoSvg from '../../assets/logo.svg';
+import { useAuth } from '../../hooks/auth';
 
 export function SignIn() {
+  const { user } = useAuth();
+
   return (
     <Container>
       <Header>

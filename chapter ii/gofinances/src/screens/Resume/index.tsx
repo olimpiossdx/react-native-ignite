@@ -4,6 +4,8 @@ import { VictoryPie } from 'victory-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useTheme } from 'styled-components';
+import { addMonths, subMonths, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 import { HistoryCard } from '../../components/HistoryCard'
 import { categories } from '../../utils/categories';
@@ -27,8 +29,15 @@ interface CategoryData {
 };
 
 export function Resume() {
-  const theme = useTheme();
+  const [seletecDate, setSeletecDate] = useState(new Date());
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([]);
+
+  const theme = useTheme();
+
+  function handleDateChange(action: 'next' | 'prev') {
+    const newDate = action == 'next' ? addMonths(seletecDate, 1) : subMonths(seletecDate, 1);
+    setSeletecDate(newDate);
+  };
 
   async function loadDataAsync() {
     const collectionKey = '@gofinances:transactions';
@@ -36,7 +45,10 @@ export function Resume() {
     const response = await AsyncStorage.getItem(collectionKey);
     const responseFormatted: Array<TransactionData> = response ? JSON.parse(response) : [];
 
-    const expensives = responseFormatted.filter((expensive) => expensive.type = 'negative');
+    const expensives = responseFormatted.filter((expensive) =>
+      expensive.type === 'negative' &&
+      new Date(expensive.date).getMonth() === seletecDate.getMonth() &&
+      new Date(expensive.date).getFullYear() === seletecDate.getFullYear());
 
     const expensiveTotal = expensives.reduce((acumulator: number, expensive: TransactionData) => {
       return acumulator + Number(expensive.amount);
@@ -74,7 +86,7 @@ export function Resume() {
     return () => {
       loadDataAsync()
     }
-  }, []);
+  }, [seletecDate]);
 
   return (
     <Container>
@@ -89,13 +101,13 @@ export function Resume() {
         }}
       >
         <MonthSelect>
-          <MonthSelectButton>
+          <MonthSelectButton onPress={() => handleDateChange('prev')}>
             <MonthSelectIcon name='chevron-left' />
           </MonthSelectButton>
 
-          <Month>Maio</Month>
+          <Month>{format(seletecDate, 'MMM, yyy', { locale: ptBR })}</Month>
 
-          <MonthSelectButton>
+          <MonthSelectButton onPress={() => handleDateChange('next')}>
             <MonthSelectIcon name='chevron-right' />
           </MonthSelectButton>
         </MonthSelect>

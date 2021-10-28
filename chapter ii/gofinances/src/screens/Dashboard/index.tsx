@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ActivityIndicator } from 'react-native';
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
 import { HighlightCard } from "../../components/HighlightCard";
@@ -24,6 +24,7 @@ import {
   TransactionsList,
   LoadingContainer
 } from "./styles";
+import { useAuth } from "../../hooks/auth";
 
 export interface IDataListProps extends ITransactionCardProps {
   id: string;
@@ -42,6 +43,7 @@ interface HighlightData {
 
 export function Dashboard() {
   const theme = useTheme();
+  const { signOut } = useAuth();
   const [loading, setLoading] = useState(true);
   const [transactions, setTransactions] = useState<IDataListProps[]>([]);
   const [highlightData, setHighlightData] = useState<HighlightData>({} as HighlightData);
@@ -56,7 +58,7 @@ export function Dashboard() {
 
   async function loadTransactionsAsync() {
     const dataKey = '@gofinances:transactions';
-    const response = await AsyncStorage.getItemda(dataKey);
+    const response = await AsyncStorage.getItem(dataKey);
     const transactions = response ? JSON.parse(response) : [];
 
     let entriesTotal = 0;
@@ -123,6 +125,10 @@ export function Dashboard() {
     setLoading(false);
   };
 
+  async function hanldleSignOutAsync() {
+    signOut();
+  };
+
   useEffect(() => {
     loadTransactionsAsync()
     return () => {
@@ -153,7 +159,7 @@ export function Dashboard() {
                 <UserName>Olimpio, </UserName>
               </User>
             </UserInfo>
-            <LogoutButton onPress={() => { }}>
+            <LogoutButton onPress={hanldleSignOutAsync}>
               <Icon name="power" />
             </LogoutButton>
           </UserWrapper>

@@ -21,6 +21,7 @@ interface AuthContextData {
   user: User;
   signInWithGoogle(): Promise<void>;
   signInWithApple(): Promise<void>;
+  signOut(): Promise<void>;
 };
 
 interface AuthorizationResponse {
@@ -111,7 +112,12 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
-  return (<AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple }}>
+  async function signOut() {
+    setUser({} as User);
+    await AsyncStorage.setItem('@gofinances:user', JSON.stringify({}));
+  };
+
+  return (<AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple, signOut }}>
     {children}
   </AuthContext.Provider>);
 };

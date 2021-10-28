@@ -12,6 +12,7 @@ import { categories } from '../../utils/categories';
 import { Container, Header, Title, Content, ChartContainer, MonthSelect, MonthSelectButton, MonthSelectIcon, Month, LoadingContainer } from './styled'
 import { ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { useAuth } from '../../hooks/auth';
 
 interface TransactionData {
   key: string;
@@ -31,6 +32,7 @@ interface CategoryData {
 };
 
 export function Resume() {
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([]);
@@ -44,7 +46,7 @@ export function Resume() {
 
   async function loadDataAsync() {
     setIsLoading(true);
-    const collectionKey = '@gofinances:transactions';
+    const collectionKey = `@gofinances:transactions_user:${user.id}`;
 
     const response = await AsyncStorage.getItem(collectionKey);
     const responseFormatted: Array<TransactionData> = response ? JSON.parse(response) : [];

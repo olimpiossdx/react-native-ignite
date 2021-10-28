@@ -23,6 +23,7 @@ import {
   Fields,
   TransactionTypes,
 } from "./styles";
+import { useAuth } from "../../hooks/auth";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Nome é obrigatório"),
@@ -37,6 +38,7 @@ interface FormData {
 };
 
 export function Register() {
+  const { user } = useAuth();
   const navigation = useNavigation();
   const [transactionType, setTransactionType] = useState("");
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
@@ -81,7 +83,7 @@ export function Register() {
       return Alert.alert("Selecione a categoria");
 
     try {
-      const collectionKey = '@gofinances:transactions';
+      const collectionKey = `@gofinances:transactions_user:${user.id}`;
 
       const data = await AsyncStorage.getItem(collectionKey);
       const currentData = data ? JSON.parse(data) : [];

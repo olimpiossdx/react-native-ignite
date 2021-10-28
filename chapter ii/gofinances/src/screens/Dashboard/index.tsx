@@ -140,56 +140,54 @@ export function Dashboard() {
     loadTransactionsAsync()
   }, []));
 
-  return (
-    <Container>
-      {loading
-        ? <LoadingContainer>
-          <ActivityIndicator color={theme.colors.primary.main} size='large' />
-        </LoadingContainer>
-        : <><Header>
-          <UserWrapper>
-            <UserInfo>
-              <Photo source={{ uri: user.photo }} />
-              <User>
-                <UserGreeting>Olá, </UserGreeting>
-                <UserName>{user.name} </UserName>
-              </User>
-            </UserInfo>
-            <LogoutButton onPress={hanldleSignOutAsync}>
-              <Icon name="power" />
-            </LogoutButton>
-          </UserWrapper>
-        </Header>
+  return (<Container>
+    {loading
+      ? <LoadingContainer>
+        <ActivityIndicator color={theme.colors.primary.main} size='large' />
+      </LoadingContainer>
+      : <><Header>
+        <UserWrapper>
+          <UserInfo>
+            <Photo source={{ uri: user.photo }} />
+            <User>
+              <UserGreeting>Olá, </UserGreeting>
+              <UserName>{user.name} </UserName>
+            </User>
+          </UserInfo>
+          <LogoutButton onPress={hanldleSignOutAsync}>
+            <Icon name="power" />
+          </LogoutButton>
+        </UserWrapper>
+      </Header>
 
-          <HighlightCards>
-            <HighlightCard
-              type="up"
-              title="Entradas"
-              amount={highlightData.entries.amount}
-              lastTransaction={highlightData.total.lastTransaction}
-            />
-            <HighlightCard
-              type="down"
-              title="Saídas"
-              amount={highlightData.expensives.amount}
-              lastTransaction={highlightData.expensives.lastTransaction}
-            />
-            <HighlightCard
-              type="total"
-              title="Total"
-              amount={highlightData.total.amount}
-              lastTransaction={highlightData.total.lastTransaction}
-            />
-          </HighlightCards>
+        <HighlightCards>
+          <HighlightCard
+            type="up"
+            title="Entradas"
+            amount={highlightData.entries.amount}
+            lastTransaction={highlightData.total.lastTransaction}
+          />
+          <HighlightCard
+            type="down"
+            title="Saídas"
+            amount={highlightData.expensives.amount}
+            lastTransaction={highlightData.expensives.lastTransaction}
+          />
+          <HighlightCard
+            type="total"
+            title="Total"
+            amount={highlightData.total.amount}
+            lastTransaction={highlightData.total.lastTransaction}
+          />
+        </HighlightCards>
 
-          <Transactions>
-            <Title>listagem</Title>
-            <TransactionsList
-              data={transactions}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => <TransactionCard data={item} />}
-            />
-          </Transactions></>}
-    </Container>
-  );
-}
+        <Transactions>
+          <Title>listagem</Title>
+          <TransactionsList
+            data={transactions}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => <TransactionCard data={item} />}
+          />
+        </Transactions></>}
+  </Container>);
+};

@@ -43,7 +43,7 @@ interface HighlightData {
 
 export function Dashboard() {
   const theme = useTheme();
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [transactions, setTransactions] = useState<IDataListProps[]>([]);
   const [highlightData, setHighlightData] = useState<HighlightData>({} as HighlightData);
@@ -149,14 +149,10 @@ export function Dashboard() {
         : <><Header>
           <UserWrapper>
             <UserInfo>
-              <Photo
-                source={{
-                  uri: "https://avatars.githubusercontent.com/u/30667729?v=4",
-                }}
-              />
+              <Photo source={{ uri: user.photo }} />
               <User>
                 <UserGreeting>Olá, </UserGreeting>
-                <UserName>Olimpio, </UserName>
+                <UserName>{user.name} </UserName>
               </User>
             </UserInfo>
             <LogoutButton onPress={hanldleSignOutAsync}>

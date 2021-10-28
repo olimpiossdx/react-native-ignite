@@ -19,6 +19,7 @@ interface User {
 
 interface AuthContextData {
   user: User;
+  userStorageLoading: boolean;
   signInWithGoogle(): Promise<void>;
   signInWithApple(): Promise<void>;
   signOut(): Promise<void>;
@@ -103,7 +104,7 @@ function AuthProvider({ children }: AuthProviderProps) {
           id: user,
           email: email!,
           name: fullName?.givenName!,
-          photo: undefined
+          photo: `https://ui-avatars.com/api/?name=${fullName?.givenName!}&length=1`
         };
 
         setUser(userLogged);
@@ -117,7 +118,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   async function signOut() {
     setUser({} as User);
-    await AsyncStorage.setItem('@gofinances:user', JSON.stringify({}));
+    await AsyncStorage.removeItem(userStorageKey);
   };
 
   useEffect(() => {
@@ -139,7 +140,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }, []);
 
-  return (<AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple, signOut }}>
+  return (<AuthContext.Provider value={{ user, userStorageLoading, signInWithGoogle, signInWithApple, signOut }}>
     {children}
   </AuthContext.Provider>);
 };

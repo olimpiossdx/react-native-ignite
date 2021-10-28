@@ -24,7 +24,6 @@ export function SignIn() {
     } catch (error: any) {
       console.error(`screen:SignIn\nmétodo:hanldeSignInWithGoogle\nerror:`, error);
       Alert.alert('Não foi possível conectar a conta Google.');
-    } finally {
       setIsLoading(false);
     }
   };
@@ -36,7 +35,6 @@ export function SignIn() {
     } catch (error: any) {
       console.error(`screen:SignIn\nmétodo:hanldeSignInWithApple\nerror:`, error);
       Alert.alert('Não foi possível conectar a conta Apple.');
-    } finally {
       setIsLoading(false);
     }
   };

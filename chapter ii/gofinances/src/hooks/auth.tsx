@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import * as AuthSession from 'expo-auth-session';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -54,7 +54,10 @@ interface UserInfoGoogle {
 export const AuthContext = createContext({} as AuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps) {
+  const userStorageKey = '@gofinances:user';
+
   const [user, setUser] = useState({} as User);
+  const [userStorageLoading, setUserStorageLoading] = useState(true);
 
   async function signInWithGoogle() {
     try {
@@ -76,7 +79,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         };
 
         setUser(userLogged);
-        await AsyncStorage.setItem('@gofinances:user', JSON.stringify(userLogged));
+        await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
       };
 
     } catch (error: any) {
@@ -104,7 +107,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         };
 
         setUser(userLogged);
-        await AsyncStorage.setItem('@gofinances:user', JSON.stringify(userLogged));
+        await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
       }
 
     } catch (error: any) {
@@ -116,6 +119,25 @@ function AuthProvider({ children }: AuthProviderProps) {
     setUser({} as User);
     await AsyncStorage.setItem('@gofinances:user', JSON.stringify({}));
   };
+
+  useEffect(() => {
+    async function loadUserStorageData() {
+      const userStoraged = await AsyncStorage.getItem(userStorageKey);
+
+      if (userStoraged) {
+        const userLogged = JSON.parse(userStoraged) as User;
+        setUser(userLogged);
+      };
+
+      setUserStorageLoading(false);
+    };
+
+    loadUserStorageData();
+
+    return () => {
+      loadUserStorageData();
+    }
+  }, []);
 
   return (<AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple, signOut }}>
     {children}

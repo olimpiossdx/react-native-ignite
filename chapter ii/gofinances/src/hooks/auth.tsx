@@ -1,23 +1,26 @@
 import React, { createContext, ReactNode, useContext, useState } from "react";
 import * as AuthSession from 'expo-auth-session';
+import * as AppleAuthentication from 'expo-apple-authentication';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { CLIENT_ID } = process.env;
 const { REDIRECT_URI } = process.env;
 
 interface AuthProviderProps {
   children: ReactNode;
-}
+};
 
 interface User {
   id: string;
   name: string;
   email: string;
   photo?: string;
-}
+};
 
 interface AuthContextData {
   user: User;
   signInWithGoogle(): Promise<void>;
+  signInWithApple(): Promise<void>;
 };
 
 interface AuthorizationResponse {
@@ -65,27 +68,57 @@ function AuthProvider({ children }: AuthProviderProps) {
         const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`);
         const { id, email, given_name, picture } = await response.json() as UserInfoGoogle;
 
-        setUser({
+        const userLogged = {
           id, email,
           name: given_name,
           photo: picture
-        });
+        };
+
+        setUser(userLogged);
+        await AsyncStorage.setItem('@gofinances:user', JSON.stringify(userLogged));
+      };
+
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  };
+
+  async function signInWithApple() {
+    try {
+      const credentecial = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL
+        ]
+      });
+
+      if (credentecial) {
+        const { user, email, fullName, } = credentecial;
+
+        const userLogged = {
+          id: user,
+          email: email!,
+          name: fullName?.givenName!,
+          photo: undefined
+        };
+
+        setUser(userLogged);
+        await AsyncStorage.setItem('@gofinances:user', JSON.stringify(userLogged));
       }
 
     } catch (error: any) {
       throw new Error(error);
     }
-    console.info(user);
-  };
+  }
 
-  return (
-    <AuthContext.Provider value={{ user, signInWithGoogle }}>{children}</AuthContext.Provider>
-  );
-}
+  return (<AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple }}>
+    {children}
+  </AuthContext.Provider>);
+};
 
 function useAuth() {
   const context = useContext(AuthContext);
   return context;
-}
+};
 
 export { AuthProvider, useAuth };

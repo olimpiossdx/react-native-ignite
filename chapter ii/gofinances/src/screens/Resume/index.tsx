@@ -92,7 +92,7 @@ export function Resume() {
 
   return (<Container>
     <Header>
-      <Title>Resymo por categoria</Title>
+      <Title>Resumo por categoria</Title>
     </Header>
     {isLoading
       ? <LoadingContainer>

@@ -34,7 +34,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-        <StatusBar barStyle='light-content' />
+        <StatusBar barStyle='light-content' backgroundColor={theme.colors.primary.main} />
         <AuthProvider>
           <SignIn />
         </AuthProvider>
